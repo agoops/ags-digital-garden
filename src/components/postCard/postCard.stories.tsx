@@ -1,16 +1,15 @@
 import React from 'react';
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
-// import { Story, Meta } from '@storybook/react/types-6-0';
+import { Story, Meta } from '@storybook/react/types-6-0';
 import { PostCard } from "./postCard";
 
 export default  {
   title: 'Example/PostCard',
   component: PostCard,
-};
-//  as Meta;
+} as Meta;
 
 // const Template: Story = ....
-const Template = (args) => <PostCard node ={args}/>;
+const Template: Story = (args: any) => <PostCard node ={args}/>;
 
 export const Example = Template.bind({});
 Example.args = {
