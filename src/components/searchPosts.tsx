@@ -1,3 +1,5 @@
+import { QueryPostResult } from "../data/post/queryPostResult";
+
 const rfs = require("react-use-flexsearch")
 
 import React, { useState } from "react"
@@ -7,7 +9,8 @@ import styled from "styled-components"
 import * as queryString from "query-string"
 
 import { rhythm } from "../utils/typography"
-import { Post, PostCard, PostCardProps } from "./postCard/postCard";
+import { PostCard} from "./postCard/postCard"
+import { Post } from "../data/post/post";
 
 const SearchBar = styled.div`
   display: flex;
@@ -45,10 +48,10 @@ const SearchBar = styled.div`
 `
 
 const SearchedPosts: Function = ({ results }: { results: Post[] }) => {
-  console.log("From SearchedPosts");
-  console.log(results);
+  console.log("From SearchedPosts")
+  console.log(results)
   return results.length > 0 ? (
-    results.map((node) => {
+    results.map(node => {
       const date = node.frontmatter.date
       const title = node.frontmatter.title || node.fields.slug
       const description = node.frontmatter.description
@@ -82,10 +85,10 @@ const SearchedPosts: Function = ({ results }: { results: Post[] }) => {
   )
 }
 
-const AllPosts = ({ posts }: { posts: PostCardProps[] }) => (
+const AllPosts = ({ nodes }: { nodes: QueryPostResult[] }) => (
   <div style={{ margin: "20px 0 40px" }}>
-    {posts.map(post => {
-      return <PostCard post={post.node} />
+    {nodes.map(node => {
+      return <PostCard post={node.node} />
     })}
   </div>
 )
@@ -97,15 +100,19 @@ const AllPosts = ({ posts }: { posts: PostCardProps[] }) => (
 // Fn to unflatten results
 export const unFlattenResults = (results: any): Post[] =>
   results.map((flatPost: any) => {
-    const { date, slug, description, excerpt, title } = flatPost;
-    return { fields: { slug }, frontmatter: { title, date, description }, excerpt };
-  });
+    const { date, slug, description, excerpt, title } = flatPost
+    return {
+      fields: { slug },
+      frontmatter: { title, date, description },
+      excerpt,
+    }
+  })
 
 interface SearchPostsProps {
-  posts: PostCardProps[],
-  localSearchBlog: any,
-  location: any,
-  navigate: any,
+  posts: QueryPostResult[]
+  localSearchBlog: any
+  location: any
+  navigate: any
 }
 const SearchPosts = ({
   posts,
@@ -114,22 +121,22 @@ const SearchPosts = ({
   navigate,
 }: SearchPostsProps) => {
   const { search } = queryString.parse(location.search)
-  console.log("PreSearch");
-  console.log(posts);
+  console.log("PreSearch")
+  console.log(posts)
   const [query, setQuery] = useState(search || "")
 
-  console.log("SearchInput");
-  console.log(localSearchBlog.index);
-  console.log(localSearchBlog.store);
+  console.log("SearchInput")
+  console.log(localSearchBlog.index)
+  console.log(localSearchBlog.store)
   const searchResults = rfs.useFlexSearch(
     query,
     localSearchBlog.index,
     JSON.parse(localSearchBlog.store)
   )
-  console.log("PostSearch");
-  console.log(searchResults);
-  const results = unFlattenResults(searchResults);
-  console.log(results);
+  console.log("PostSearch")
+  console.log(searchResults)
+  const results = unFlattenResults(searchResults)
+  console.log(results)
   return (
     <>
       <SearchBar>
@@ -153,7 +160,7 @@ const SearchPosts = ({
           }}
         />
       </SearchBar>
-      {query ? <SearchedPosts results={results} /> : <AllPosts posts={posts} />}
+      {query ? <SearchedPosts results={results} /> : <AllPosts nodes={posts} />}
     </>
   )
 }

@@ -78,10 +78,10 @@
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
-    "format": "prettier --write src/**/*.{js,jsx}",
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
+    "fmt": "yarn format",
     "tsc" : "tsc",
     "lint": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js,jsx",
-    "fmt": "yarn format",
     "start": "npm run develop",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
