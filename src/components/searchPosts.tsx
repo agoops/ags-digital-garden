@@ -1,11 +1,13 @@
+const rfs = require("react-use-flexsearch")
+
 import React, { useState } from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
-import { useFlexSearch } from "react-use-flexsearch"
+
 import * as queryString from "query-string"
 
 import { rhythm } from "../utils/typography"
-import { PostCard } from "./postCard/postCard";
+import { Post, PostCard, PostCardProps } from "./postCard/postCard";
 
 const SearchBar = styled.div`
   display: flex;
@@ -42,14 +44,16 @@ const SearchBar = styled.div`
   }
 `
 
-const SearchedPosts = ({ results }) =>
-  results.length > 0 ? (
-    results.map(node => {
-      const date = node.date
-      const title = node.title || node.slug
-      const description = node.description
+const SearchedPosts: Function = ({ results }: { results: Post[] }) => {
+  console.log("From SearchedPosts");
+  console.log(results);
+  return results.length > 0 ? (
+    results.map((node) => {
+      const date = node.frontmatter.date
+      const title = node.frontmatter.title || node.fields.slug
+      const description = node.frontmatter.description
       const excerpt = node.excerpt
-      const slug = node.slug
+      const slug = node.fields.slug
 
       return (
         <div key={slug}>
@@ -76,25 +80,56 @@ const SearchedPosts = ({ results }) =>
       Sorry, couldn't find any posts matching this search.
     </p>
   )
+}
 
-const AllPosts = ({ posts }) => (
+const AllPosts = ({ posts }: { posts: PostCardProps[] }) => (
   <div style={{ margin: "20px 0 40px" }}>
-    {posts.map(({ node }) => {
-      return <PostCard node = {node}/>
+    {posts.map(post => {
+      return <PostCard post={post.node} />
     })}
   </div>
 )
 
-const SearchPosts = ({ posts, localSearchBlog, location, navigate }) => {
+// The serach plugin requires objects to be flat
+// See the "normalizer" field: https://github.com/angeloashmore/gatsby-plugin-local-search#how-to-use
+// This blog https://www.emgoto.com/gatsby-search/
+// just mentions unflattening it....
+// Fn to unflatten results
+export const unFlattenResults = (results: any): Post[] =>
+  results.map((flatPost: any) => {
+    const { date, slug, description, excerpt, title } = flatPost;
+    return { fields: { slug }, frontmatter: { title, date, description }, excerpt };
+  });
+
+interface SearchPostsProps {
+  posts: PostCardProps[],
+  localSearchBlog: any,
+  location: any,
+  navigate: any,
+}
+const SearchPosts = ({
+  posts,
+  localSearchBlog,
+  location,
+  navigate,
+}: SearchPostsProps) => {
   const { search } = queryString.parse(location.search)
+  console.log("PreSearch");
+  console.log(posts);
   const [query, setQuery] = useState(search || "")
 
-  const results = useFlexSearch(
+  console.log("SearchInput");
+  console.log(localSearchBlog.index);
+  console.log(localSearchBlog.store);
+  const searchResults = rfs.useFlexSearch(
     query,
     localSearchBlog.index,
     JSON.parse(localSearchBlog.store)
   )
-
+  console.log("PostSearch");
+  console.log(searchResults);
+  const results = unFlattenResults(searchResults);
+  console.log(results);
   return (
     <>
       <SearchBar>

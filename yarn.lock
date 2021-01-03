@@ -3100,6 +3100,14 @@
   resolved "https://transparentinc.jfrog.io/transparentinc/api/npm/npm/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
   integrity sha1-cDZkC04hzC8lmugmzoQ9J32tjP8=
 
+"@types/styled-components@4.0.3":
+  version "4.0.3"
+  resolved "https://transparentinc.jfrog.io/transparentinc/api/npm/npm/@types/styled-components/-/styled-components-4.0.3.tgz#8287e54e446302369eecc521243a2f32cf9122ee"
+  integrity sha1-goflTkRjAjae7MUhJDovMs+RIu4=
+  dependencies:
+    "@types/node" "*"
+    "@types/react" "*"
+
 "@types/tapable@*", "@types/tapable@^1.0.5":
   version "1.0.6"
   resolved "https://transparentinc.jfrog.io/transparentinc/api/npm/npm/@types/tapable/-/tapable-1.0.6.tgz#a9ca4b70a18b270ccb2bc0aaafefd1d486b7ea74"

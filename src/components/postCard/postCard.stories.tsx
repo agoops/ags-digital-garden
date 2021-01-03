@@ -9,7 +9,7 @@ export default  {
 } as Meta;
 
 // const Template: Story = ....
-const Template: Story = (args: any) => <PostCard node ={args}/>;
+const Template: Story = (args: any) => <PostCard post={args}/>;
 
 export const Example = Template.bind({});
 Example.args = {
