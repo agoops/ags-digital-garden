@@ -4,14 +4,16 @@ import { rhythm } from "../../utils/typography"
 import { Post } from "../../data/post/post"
 
 export interface PostCardProps {
+  // Some docstring
   post: Post
 }
 
 /**
  * Primary UI component for user interaction
  */
+export const PostCard = (props: PostCardProps) => {
+  const post = props.post
 
-export const PostCard: React.FC<PostCardProps> = ({ post }: PostCardProps) => {
   const title = post.frontmatter.title || post.fields.slug
   return (
     <div key={post.fields.slug}>

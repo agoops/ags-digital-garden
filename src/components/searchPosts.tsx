@@ -1,4 +1,4 @@
-import { QueryPostResult } from "../data/post/queryPostResult";
+import { QueryPostResult } from "../data/post/queryPostResult"
 
 const rfs = require("react-use-flexsearch")
 
@@ -9,8 +9,8 @@ import styled from "styled-components"
 import * as queryString from "query-string"
 
 import { rhythm } from "../utils/typography"
-import { PostCard} from "./postCard/postCard"
-import { Post } from "../data/post/post";
+import { PostCard } from "./postCard/postCard"
+import { Post } from "../data/post/post"
 
 const SearchBar = styled.div`
   display: flex;
@@ -48,40 +48,12 @@ const SearchBar = styled.div`
 `
 
 const SearchedPosts: Function = ({ results }: { results: Post[] }) => {
-  console.log("From SearchedPosts")
-  console.log(results)
   return results.length > 0 ? (
-    results.map(node => {
-      const date = node.frontmatter.date
-      const title = node.frontmatter.title || node.fields.slug
-      const description = node.frontmatter.description
-      const excerpt = node.excerpt
-      const slug = node.fields.slug
-
-      return (
-        <div key={slug}>
-          <h3
-            style={{
-              marginBottom: rhythm(1 / 4),
-            }}
-          >
-            <Link style={{ boxShadow: `none` }} to={`/blog${slug}`}>
-              {title}
-            </Link>
-          </h3>
-          <small>{date}</small>
-          <p
-            dangerouslySetInnerHTML={{
-              __html: description || excerpt,
-            }}
-          />
-        </div>
-      )
+    results.map(post => {
+      return <PostCard post={post} />
     })
   ) : (
-    <p style={{ textAlign: "center" }}>
-      Sorry, couldn't find any posts matching this search.
-    </p>
+    <p style={{ textAlign: "center" }}>No posts matching this search.</p>
   )
 }
 
